@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-const DESIGNS = [
+const MEN_DESIGNS = [
   { id: '101', src: '/designs/design-1.jpeg', title: 'HUMBLE' },
   { id: '102', src: '/designs/design-2.jpeg', title: 'Respect' },
   { id: '103', src: '/designs/design-3.jpeg', title: 'Wildflower Spirit' },
@@ -21,6 +21,21 @@ const DESIGNS = [
   { id: '109', src: '/designs/design-9.jpeg', title: 'Dreams' },
   { id: '1010', src: '/designs/design-10.jpeg', title: 'Positive' },
 ]
+
+const WOMEN_DESIGNS = [
+  { id: '201', src: '/designs/design-11.jpeg', title: 'Grace' },
+  { id: '202', src: '/designs/design-12.jpeg', title: 'Elegance' },
+  { id: '203', src: '/designs/design-13.jpeg', title: 'Fierce' },
+  { id: '204', src: '/designs/design-14.jpeg', title: 'Bloom' },
+  { id: '205', src: '/designs/design-15.jpeg', title: 'Radiant' },
+  { id: '206', src: '/designs/design-16.jpeg', title: 'Empowered' },
+  { id: '207', src: '/designs/design-17.jpeg', title: 'Bold' },
+  { id: '208', src: '/designs/design-18.jpeg', title: 'Serene' },
+  { id: '209', src: '/designs/design-19.jpeg', title: 'Vibrant' },
+  { id: '2010', src: '/designs/design-20.jpeg', title: 'Shine' },
+]
+
+const UNISEX_DESIGNS = [...MEN_DESIGNS, ...WOMEN_DESIGNS]
 
 type ProductLabel = 'Hoodie' | 'Sweatshirt' | 'T-Shirt'
 type CartItem = {
@@ -88,6 +103,13 @@ function CustomizeContent() {
   const canPickDesign = !!size
   const canAdd = !!(gender && product && size && designId)
 
+  // Get designs based on gender selection
+  const availableDesigns = 
+    gender === 'Men' ? MEN_DESIGNS :
+    gender === 'Women' ? WOMEN_DESIGNS :
+    gender === 'Unisex' ? UNISEX_DESIGNS :
+    []
+
   function resetFrom(step: 'gender' | 'product' | 'size') {
     if (step === 'gender') {
       setProduct(null)
@@ -108,7 +130,7 @@ function CustomizeContent() {
     if (!canAdd || adding) return
     setAdding(true)
 
-    const design = DESIGNS.find((d) => d.id === designId)
+    const design = availableDesigns.find((d) => d.id === designId)
     if (!design) {
       setToast('Design not found. Check /public/designs/')
       setAdding(false)
@@ -247,7 +269,7 @@ function CustomizeContent() {
                 <p className="text-white/70">Select gender, product and size first.</p>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                  {DESIGNS.map((d) => {
+                  {availableDesigns.map((d) => {
                     const selected = designId === d.id
                     return (
                       <button

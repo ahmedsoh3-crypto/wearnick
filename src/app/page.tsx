@@ -236,7 +236,7 @@ export default function HomePage() {
               </a>
 
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/share/1DrMmB8svU/?mibextid=wwXIfr"
                 target="_blank"
                 rel="noreferrer"
                 className="px-5 py-3 rounded-full border border-white/20 hover:bg-white hover:text-black transition"
@@ -256,7 +256,7 @@ export default function HomePage() {
               <div className="text-white/70 text-sm mt-2 space-y-1">
                 <div>
                   <span className="text-white font-semibold">Email:</span>{' '}
-                  umar@wearnick.com
+                  officials@wearnick.com
                 </div>
                 <div>
                   <span className="text-white font-semibold">WhatsApp:</span>{' '}
