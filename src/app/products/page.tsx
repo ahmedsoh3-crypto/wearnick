@@ -20,7 +20,7 @@ const products = [
   },
 ]
 
-function normalizeType(input: unknown): ProductType | '' {
+// function normalizeType(input: unknown): ProductType | '' {
   if (!input) return ''
   const val = Array.isArray(input) ? input[0] : input
   if (typeof val !== 'string') return ''
@@ -36,7 +36,7 @@ export default async function ProductsPage({
 }: {
   searchParams?: Promise<{ type?: string | string[] }>
 }) {
-  const sp = searchParams ? await searchParams : undefined
+  const sp = searchParams ? await searchParams : {}
   const type = normalizeType(sp?.type)
 
   const filtered = type ? products.filter((p) => p.key === type) : products
