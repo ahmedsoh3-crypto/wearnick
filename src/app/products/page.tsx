@@ -1,5 +1,9 @@
 import Link from 'next/link'
 
+type PageProps = {
+  searchParams?: Promise<{ type?: string | string[] }>
+}
+
 type ProductType = 'hoodies' | 'sweatshirts' | 'shirts'
 
 const products = [
@@ -20,7 +24,7 @@ const products = [
   },
 ]
 
-// function normalizeType(input: unknown): ProductType | '' {
+function normalizeType(input: unknown): ProductType | '' {
   if (!input) return ''
   const val = Array.isArray(input) ? input[0] : input
   if (typeof val !== 'string') return ''
@@ -33,9 +37,7 @@ const products = [
 
 export default async function ProductsPage({
   searchParams,
-}: {
-  searchParams?: Promise<{ type?: string | string[] }>
-}) {
+}: PageProps) {
   const sp = searchParams ? await searchParams : {}
   const type = normalizeType(sp?.type)
 
