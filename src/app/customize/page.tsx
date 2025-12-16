@@ -1,6 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+export const dynamic = 'force-dynamic'
+
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -59,7 +61,7 @@ function writeCart(items: CartItem[]) {
   localStorage.setItem(CART_KEY, JSON.stringify(items))
 }
 
-export default function CustomizePage() {
+function CustomizeContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
 
@@ -108,14 +110,12 @@ export default function CustomizePage() {
 
     const design = DESIGNS.find((d) => d.id === designId)
     if (!design) {
-      setToast('Design not found. Check your designs folder.')
+      setToast('Design not found. Check /public/designs/')
       setAdding(false)
       return
     }
 
     const cart = readCart()
-
-    // If same selection exists, increase qty
     const existingIndex = cart.findIndex(
       (x) =>
         x.gender === gender &&
@@ -127,7 +127,7 @@ export default function CustomizePage() {
     if (existingIndex >= 0) {
       cart[existingIndex] = { ...cart[existingIndex], qty: cart[existingIndex].qty + 1 }
     } else {
-      const item: CartItem = {
+      cart.unshift({
         id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
         gender: gender!,
         product: product!,
@@ -137,15 +137,12 @@ export default function CustomizePage() {
         designSrc: design.src,
         qty: 1,
         addedAt: Date.now(),
-      }
-      cart.unshift(item)
+      })
     }
 
     writeCart(cart)
     setToast('✅ Added to cart!')
     setAdding(false)
-
-    // Optional: auto go to cart
     router.push('/cart')
   }
 
@@ -179,7 +176,6 @@ export default function CustomizePage() {
             </div>
           </div>
 
-          {/* STEP 1 */}
           <Card className="bg-white/5 border-white/10">
             <CardHeader>
               <CardTitle>1. Choose Gender</CardTitle>
@@ -200,7 +196,6 @@ export default function CustomizePage() {
             </CardContent>
           </Card>
 
-          {/* STEP 2 */}
           <Card className={`bg-white/5 border-white/10 ${!canPickProduct ? 'opacity-60' : ''}`}>
             <CardHeader>
               <CardTitle>2. Choose Product</CardTitle>
@@ -222,7 +217,6 @@ export default function CustomizePage() {
             </CardContent>
           </Card>
 
-          {/* STEP 3 */}
           <Card className={`bg-white/5 border-white/10 ${!canPickSize ? 'opacity-60' : ''}`}>
             <CardHeader>
               <CardTitle>3. Choose Size</CardTitle>
@@ -244,7 +238,6 @@ export default function CustomizePage() {
             </CardContent>
           </Card>
 
-          {/* STEP 4 */}
           <Card className={`bg-white/5 border-white/10 ${!canPickDesign ? 'opacity-60' : ''}`}>
             <CardHeader>
               <CardTitle>4. Choose Design</CardTitle>
@@ -278,14 +271,11 @@ export default function CustomizePage() {
             </CardContent>
           </Card>
 
-          {/* ACTION BAR */}
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="text-white/70">
               {toast ? <span className="text-white font-semibold">{toast}</span> : null}
               {!toast ? (
-                <span>
-                  {canAdd ? 'Ready to add to cart.' : 'Complete all steps to add to cart.'}
-                </span>
+                <span>{canAdd ? 'Ready to add to cart.' : 'Complete all steps to add to cart.'}</span>
               ) : null}
             </div>
 
@@ -300,5 +290,17 @@ export default function CustomizePage() {
         </div>
       </section>
     </main>
+  )
+}
+
+export default function CustomizePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="animate-pulse text-xl">Loading customization...</div>
+      </div>
+    }>
+      <CustomizeContent />
+    </Suspense>
   )
 }

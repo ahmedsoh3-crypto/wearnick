@@ -20,12 +20,25 @@ const products = [
   },
 ]
 
-export default function ProductsPage({
+function normalizeType(input: unknown): ProductType | '' {
+  if (!input) return ''
+  const val = Array.isArray(input) ? input[0] : input
+  if (typeof val !== 'string') return ''
+  const t = val.toLowerCase().trim()
+  if (t === 'hoodies') return 'hoodies'
+  if (t === 'sweatshirts') return 'sweatshirts'
+  if (t === 'shirts') return 'shirts'
+  return ''
+}
+
+export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams?: { type?: string }
+  searchParams?: Promise<{ type?: string | string[] }>
 }) {
-  const type = (searchParams?.type || '').toLowerCase() as ProductType | ''
+  const sp = searchParams ? await searchParams : undefined
+  const type = normalizeType(sp?.type)
+
   const filtered = type ? products.filter((p) => p.key === type) : products
 
   return (
@@ -75,13 +88,14 @@ export default function ProductsPage({
                 <h3 className="text-2xl font-bold">{p.title}</h3>
                 <p className="text-white/70 mt-2">{p.desc}</p>
 
-                <div className="mt-6 flex gap-3">
+                <div className="mt-6 flex gap-3 flex-wrap">
                   <Link
                     href="/customize"
                     className="px-5 py-3 rounded-full bg-white text-black font-semibold hover:opacity-90 transition"
                   >
                     Customize
                   </Link>
+
                   <Link
                     href={`/customize?product=${p.key}`}
                     className="px-5 py-3 rounded-full border border-white/40 hover:bg-white hover:text-black transition"
