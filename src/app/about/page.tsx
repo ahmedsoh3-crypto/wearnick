@@ -6,7 +6,7 @@ const TEAM_MEMBERS = [
   { name: 'M. Omar Shabbir', role: 'Lead Developer', image: '/team/team-3.jpeg' },
   { name: 'Ali Sikandar', role: 'Product Manager', image: '/team/team-4.jpeg' },
   { name: 'Ateeb Ali Khan Afridi', role: 'Marketing Director', image: '/team/team-5.jpeg' },
-  { name: 'Ammar Nasrullah', role: 'Operations Manager', image: '/team/team-6.jpeg' },
+  { name: 'Ammar Nasrullah', role: 'Head of Security', image: '/team/team-6.jpeg' },
   { name: 'Hafiz Abdullah', role: 'Customer Success Lead', image: '/team/team-7.jpeg' },
   { name: 'Nehal Ahmad', role: 'Creative Director', image: '/team/team-8.jpeg' },
 ]
