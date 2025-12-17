@@ -76,7 +76,7 @@ export default function CheckoutPage() {
           <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
             <h1 className="text-3xl font-extrabold">Checkout</h1>
             <p className="text-white/70 mt-2">
-              Demo payment — no real transaction.
+              
             </p>
 
             <div className="mt-6 border-t border-white/10 pt-6">
